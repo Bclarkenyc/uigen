@@ -133,7 +133,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\bclar\\OneDrive\\Documents\\uigen\\src\\generated\\prisma",
+      "value": "C:\\Users\\bclar\\OneDrive\\Documents\\Claude\\Projects\\ANTHROPIC ACADEMY\\uigen\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -147,7 +147,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\bclar\\OneDrive\\Documents\\uigen\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\bclar\\OneDrive\\Documents\\Claude\\Projects\\ANTHROPIC ACADEMY\\uigen\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

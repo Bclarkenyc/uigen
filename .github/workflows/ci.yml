@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ui-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Create .env
+        run: |
+          printf 'ANTHROPIC_API_KEY="your-api-key-here"\nJWT_SECRET="development-secret-key"\n' > .env
+
+      - name: Setup
+        run: npm run setup
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start dev server
+        run: npm run dev:daemon
+
+      - name: Wait for dev server
+        run: |
+          timeout 60 bash -c \
+            'until curl -sf http://localhost:3000 > /dev/null 2>&1; do sleep 2; done' \
+          || { echo "Server failed to start:"; cat logs.txt; exit 1; }
+
+      - name: Test with Claude Code agent
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          custom_instructions: |
+            The UIGen development server is running at http://localhost:3000. The
+            server is already up — do not run npm commands.
+
+            Use mcp__playwright tools to verify the application works:
+
+            1. Navigate to http://localhost:3000
+            2. Confirm the page loads and the chat input is visible
+            3. Type "Create a simple counter component" into the chat input and submit
+            4. Wait for the AI response and verify the preview pane shows a rendered component
+            5. Take a screenshot of the final state
+
+            The app uses a MockLanguageModel in this environment, so responses will be
+            fast canned examples (Counter, Card, or ContactForm). That is expected.
+
+            Report PASS with a summary if all steps succeed. Report FAIL with details
+            if the page does not load, the chat does not respond, or the preview is empty.
