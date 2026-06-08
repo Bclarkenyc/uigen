@@ -44,6 +44,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_instructions: |
             The UIGen development server is running at http://localhost:3000. The
             server is already up — do not run npm commands.
