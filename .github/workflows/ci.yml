@@ -45,7 +45,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: agent
-          custom_instructions: |
+          direct_prompt: |
             The UIGen development server is running at http://localhost:3000. The
             server is already up — do not run npm commands.
 
